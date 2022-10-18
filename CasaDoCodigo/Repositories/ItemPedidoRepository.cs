@@ -9,6 +9,11 @@ namespace CasaDoCodigo.Repositories
         {
         }
 
-
+        public ItemPedido GetItemPedido(int itemPedidoId)
+        {
+            return _dbSet
+               .Where(ip => ip.Id == itemPedidoId)
+               .SingleOrDefault();
+        }
     }
 }

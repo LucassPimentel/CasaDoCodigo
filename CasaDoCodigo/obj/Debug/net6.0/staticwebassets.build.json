@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ktuj9BQ5qRQjcOixNrKi9xuI4Hp/cXm0rX6rP+OT5z4=",
+  "Hash": "e97xSGRGYrqUWos/XXdTBUfI2tqyZ+6dhkROVGMoI98=",
   "Source": "CasaDoCodigo",
   "BasePath": "_content/CasaDoCodigo",
   "Mode": "Default",
@@ -1205,6 +1205,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\produtos\\large_065.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\lupdsilva\\source\\repos\\CasaDoCodigo\\CasaDoCodigo\\wwwroot\\js\\Carrinho.js",
+      "SourceId": "CasaDoCodigo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lupdsilva\\source\\repos\\CasaDoCodigo\\CasaDoCodigo\\wwwroot\\",
+      "BasePath": "_content/CasaDoCodigo",
+      "RelativePath": "js/Carrinho.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Carrinho.js"
     },
     {
       "Identity": "C:\\Users\\lupdsilva\\source\\repos\\CasaDoCodigo\\CasaDoCodigo\\wwwroot\\js\\site.js",

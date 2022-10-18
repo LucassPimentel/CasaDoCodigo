@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 
 // Sessao serve para manter o estado de uma maneira artificial controlada pelo servidor, para que não se perca dados ao navegar por outras paginas da aplicação (a web é stateless ou seja, não tem estado).
 
