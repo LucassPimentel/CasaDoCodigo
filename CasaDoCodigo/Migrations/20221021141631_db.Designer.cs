@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CasaDoCodigo.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20221003141211_Adicionando_Tabelas_Pedido_ItemPedido_Cadastro")]
-    partial class Adicionando_Tabelas_Pedido_ItemPedido_Cadastro
+    [Migration("20221021141631_db")]
+    partial class db
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,10 +57,8 @@ namespace CasaDoCodigo.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PedidoForeignKey")
-                        .HasColumnType("int");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
@@ -71,9 +69,6 @@ namespace CasaDoCodigo.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PedidoForeignKey")
-                        .IsUnique();
 
                     b.ToTable("Cadastro");
                 });
@@ -115,7 +110,13 @@ namespace CasaDoCodigo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CadastroForeignKey")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CadastroForeignKey")
+                        .IsUnique();
 
                     b.ToTable("Pedido");
                 });
@@ -144,17 +145,6 @@ namespace CasaDoCodigo.Migrations
                     b.ToTable("Produto");
                 });
 
-            modelBuilder.Entity("CasaDoCodigo.Models.Cadastro", b =>
-                {
-                    b.HasOne("CasaDoCodigo.Models.Pedido", "Pedido")
-                        .WithOne("Cadastro")
-                        .HasForeignKey("CasaDoCodigo.Models.Cadastro", "PedidoForeignKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pedido");
-                });
-
             modelBuilder.Entity("CasaDoCodigo.Models.ItemPedido", b =>
                 {
                     b.HasOne("CasaDoCodigo.Models.Pedido", "Pedido")
@@ -176,9 +166,23 @@ namespace CasaDoCodigo.Migrations
 
             modelBuilder.Entity("CasaDoCodigo.Models.Pedido", b =>
                 {
-                    b.Navigation("Cadastro")
+                    b.HasOne("CasaDoCodigo.Models.Cadastro", "Cadastro")
+                        .WithOne("Pedido")
+                        .HasForeignKey("CasaDoCodigo.Models.Pedido", "CadastroForeignKey")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Cadastro");
+                });
+
+            modelBuilder.Entity("CasaDoCodigo.Models.Cadastro", b =>
+                {
+                    b.Navigation("Pedido")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CasaDoCodigo.Models.Pedido", b =>
+                {
                     b.Navigation("Itens");
                 });
 #pragma warning restore 612, 618

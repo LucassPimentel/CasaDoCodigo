@@ -2,6 +2,7 @@
 using CasaDoCodigo.Models.ViewModels;
 using CasaDoCodigo.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml;
 
 namespace CasaDoCodigo.Controllers
 {
@@ -37,16 +38,28 @@ namespace CasaDoCodigo.Controllers
 
         public IActionResult Cadastro()
         {
-            return View();
-        }
-
-        public IActionResult Resumo()
-        {
             var pedido = _pedidoRepository.GetPedido();
-            return View(pedido);
+            if (pedido == null)
+            {
+                return RedirectToAction("Carrossel");
+            }
+            return View(pedido.Cadastro);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Resumo(Cadastro cadastro)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(_pedidoRepository.UpdateCadastro(cadastro));
+            }
+
+            return RedirectToAction("Cadastro");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public UpdateQuantidadeResponse UpdateQuantidade([FromBody] ItemPedido itemPedido)
         {
             return _pedidoRepository.UpdateQuantidade(itemPedido);

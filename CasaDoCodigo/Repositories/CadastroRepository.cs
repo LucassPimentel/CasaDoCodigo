@@ -9,6 +9,22 @@ namespace CasaDoCodigo.Repositories
         {
         }
 
+        public Cadastro UpdateCadastro(int cadastroId, Cadastro novoCadastro)
+        {
+            var cadastroDB = _dbSet
+                .Where(c => c.Id == cadastroId)
+                .SingleOrDefault();
 
+            if (cadastroDB == null)
+            {
+                throw new ArgumentNullException("Cadastro");
+            }
+
+            cadastroDB.Update(novoCadastro);
+            _dbContext.SaveChanges();
+
+            return cadastroDB;
+
+        }
     }
 }

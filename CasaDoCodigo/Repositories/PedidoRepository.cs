@@ -9,11 +9,13 @@ namespace CasaDoCodigo.Repositories
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IItemPedidoRepository _itemPedidoRepository;
+        private readonly ICadastroRepository _cadastroRepository;
 
-        public PedidoRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor, IItemPedidoRepository itemPedidoRepository) : base(dbContext)
+        public PedidoRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor, IItemPedidoRepository itemPedidoRepository, ICadastroRepository cadastroRepository) : base(dbContext)
         {
             _httpContextAccessor = httpContextAccessor;
             _itemPedidoRepository = itemPedidoRepository;
+            _cadastroRepository = cadastroRepository;
         }
 
         public void AddItem(string codigoProduto)
@@ -50,6 +52,7 @@ namespace CasaDoCodigo.Repositories
             var pedido = _dbSet
                 .Include(p => p.Itens)
                     .ThenInclude(i => i.Produto)
+                .Include(p => p.Cadastro)
                 .Where(p => p.Id == pedidoId)
                 .SingleOrDefault();
 
@@ -64,6 +67,13 @@ namespace CasaDoCodigo.Repositories
             return pedido;
         }
 
+        public Pedido UpdateCadastro(Cadastro cadastro)
+        {
+            var pedido = GetPedido();
+            _cadastroRepository.UpdateCadastro(pedido.Cadastro.Id, cadastro);
+            return pedido;
+        }
+
         public UpdateQuantidadeResponse UpdateQuantidade(ItemPedido itemPedido)
         {
             var itemPedidoDb = _itemPedidoRepository.GetItemPedido(itemPedido.Id);
@@ -71,6 +81,12 @@ namespace CasaDoCodigo.Repositories
             if (itemPedido != null)
             {
                 itemPedidoDb.AtualizaQuantidade(itemPedido.Quantidade);
+
+                if (itemPedido.Quantidade == 0)
+                {
+                    _itemPedidoRepository.RemoveItemPedido(itemPedido.Id);
+                }
+
                 _dbContext.SaveChanges();
 
                 var carrinhoVM = new CarrinhoViewModel(GetPedido().Itens);
